@@ -95,8 +95,11 @@ document.getElementById('gallery').innerHTML = cardContainer;
  * @param {*} user An object from the Random Users array containing all information on the user
  */
 function createModalWindow(data, position){
-    //console.log(data[position]); //check that user object was properly passsed to the functionxs
-
+    //console.log(data[dposition]); //check that user object was properly passsed to the functionxs
+    //verify position is a number
+    if(typeof(position) == 'string'){
+        position = parseInt(position);
+        }
     const user = data[position];
     //extract user info
     const name = user['name'].first + " " + user['name'].last;
