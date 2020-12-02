@@ -1,13 +1,21 @@
+//search button
+document.querySelector('.search-container').innerHTML = ` 
+        <form action="#" method="get">
+            <input type="search" id="search-input" class="search-input" placeholder="Search...">
+            <input type="submit" value="&#x1F50D;" id="search-submit" class="search-submit">
+        </form>
+`;
+
 
 //array of 12 random users populated by a call to the Random User API
-fetch('https://randomuser.me/api/?results=12')
+fetch('https://randomuser.me/api/?results=12&nat=au,ca,es,fr,gb,ie,nz,us')
     .then(response => response.json())
     .then(data =>{ 
         let randomUsers = data.results;
 
         addUsersToPage(randomUsers);
-        
-        
+
+        //event listener for list of users
         document.getElementById('gallery').addEventListener('click', (event) => {
             //console.log(event.target); - check that event is triggered properly
      
@@ -21,11 +29,33 @@ fetch('https://randomuser.me/api/?results=12')
                     //console.log(element.dataset.position);
                 }
                 else if(element.parentNode.dataset.position){
-                    createModalWindow(randomUsers,element.parentNode.dataset.position)
+                    createModalWindow(randomUsers, element.parentNode.dataset.position)
                     //console.log(element.parentNode.dataset.position);
                 }
             }         
         });
+
+        //add event listener to button in search toolbar and on enter keypress
+        const form = document.querySelector('form');
+        const searchBar = document.getElementById('search-input');
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            let userExist = false;
+            //search for user
+            for(let i = 0; i < randomUsers.length; i++){
+                const user = randomUsers[i];
+                const name = user['name'].first + " " + user['name'].last
+                if(name.includes(searchBar.value)){
+                    userExist = true;
+                    createModalWindow(randomUsers, i);
+                    break;
+                }
+            }
+            if(!userExist){
+                alert('User was not found');
+            }
+        })
+
     })
     .catch(error => console.log(error));
 
@@ -120,7 +150,7 @@ function createModalWindow(data, position){
 
         });
     }
-    
+
 //helper funtion to remove overlay item
 function remove(){
     document.querySelector('.modal-container').remove();
