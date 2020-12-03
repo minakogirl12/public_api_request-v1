@@ -38,17 +38,25 @@ fetch('https://randomuser.me/api/?results=12&nat=au,ca,es,fr,gb,ie,nz,us')
         //add event listener to button in search toolbar and on enter keypress
         const form = document.querySelector('form');
         const searchBar = document.getElementById('search-input');
+        const userCards = document.querySelectorAll('.card');
+
+
         form.addEventListener('submit', (event) => {
             event.preventDefault();
             let userExist = false;
+            
             //search for user
             for(let i = 0; i < randomUsers.length; i++){
                 const user = randomUsers[i];
-                const name = user['name'].first + " " + user['name'].last
-                if(name.includes(searchBar.value)){
+                const name = user['name'].first + " " + user['name'].last;
+
+                //converted both strings to lowercase to avoid issues with case sensitivity
+                if(name.toLowerCase().includes(searchBar.value.toLowerCase())){
+                    userCards[i].style.display = '';
                     userExist = true;
-                    createModalWindow(randomUsers, i);
-                    break;
+                }
+                else{
+                    userCards[i].style.display = 'none';
                 }
             }
             if(!userExist){
@@ -110,7 +118,7 @@ function createModalWindow(data, position){
          <div class="modal">
                 <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
                 <div class="modal-info-container">
-                    <img class="modal-img" src="${user['picture'].thumbnail}" alt="profile picture">
+                    <img class="modal-img" src="${user['picture'].large}" alt="profile picture">
                     <h3 id="name" class="modal-name cap">${name}</h3>
                     <p class="modal-text">${user.email}</p>
                     <p class="modal-text cap">${user['location'].city}</p>
