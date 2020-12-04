@@ -13,3 +13,5 @@ Changes to CSS:
     Changed the border-radius on the card elements to 0.5em
     Changed the border color on the modal windows
     Added text shadow to the headings
+    
+    TODO: After a search is made the modal window paginates through all the users instead of just the search results
